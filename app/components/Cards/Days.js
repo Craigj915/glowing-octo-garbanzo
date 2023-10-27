@@ -8,7 +8,7 @@ const Days = () => {
   const city = search.city;
   const [groupedData, setGroupedData] = useState({});
 
- const APIKEY = process.env.API_KEY;
+ let APIKEY = process.env.API_KEY;
 
   const getData = async () => {
     const data = await axios.get(
