@@ -7,12 +7,14 @@ const Days = () => {
   const [title, setTitle] = useState("");
   const city = search.city;
   const [groupedData, setGroupedData] = useState({});
-
-  process.env.API_KEY;
-
+  
+  const APIKEY = () => {
+    process.env.API_KEY;
+  }
+  
   const getData = async () => {
     const data = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`
     );
     const weatherList = data.data.list;
 
