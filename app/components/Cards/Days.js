@@ -8,7 +8,7 @@ const Days = () => {
   const city = search.city;
   const [groupedData, setGroupedData] = useState({});
 
-  const APIKEY = "KEY-HERE";
+ // const APIKEY = "KEY-HERE";
 
   const getData = async () => {
     const data = await axios.get(
