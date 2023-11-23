@@ -1,45 +1,49 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+require("dotenv").config();
 
 const Days = () => {
   const [search, setSearch] = useState("");
   const [title, setTitle] = useState("");
   const city = search.city;
   const [groupedData, setGroupedData] = useState({});
-
-  const APIKEY = "KEY-HERE";
+  const APIKEY = process.env.REACT_APP_API_KEY;
 
   const getData = async () => {
-    const data = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`
-    );
-    const weatherList = data.data.list;
+    try {
+      const data = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIKEY}&units=metric`
+      );
+      const weatherList = data.data.list;
 
-    const mappedData = weatherList.map((item) => ({
-      temp: item.main.temp,
-      description: item.weather[0].description,
-      icon: item.weather[0].icon,
-      wind: item.wind.speed,
-      date: new Date(item.dt * 1000).toLocaleDateString(),
-      day: new Date(item.dt * 1000).toLocaleDateString("en-GB", {
-        weekday: "long",
-      }),
-      humidity: item.main.humidity,
-    }));
+      const mappedData = weatherList.map((item) => ({
+        temp: item.main.temp,
+        description: item.weather[0].description,
+        icon: item.weather[0].icon,
+        wind: item.wind.speed,
+        date: new Date(item.dt * 1000).toLocaleDateString(),
+        day: new Date(item.dt * 1000).toLocaleDateString("en-GB", {
+          weekday: "long",
+        }),
+        humidity: item.main.humidity,
+      }));
 
-    console.log("MAPPEPED DATA!!!", weatherList);
+      console.log("MAPPEPED DATA!!!", weatherList);
 
-    const groupedData = mappedData.reduce((groups, item) => {
-      const key = item.date;
-      if (!groups[key]) {
-        groups[key] = [];
-      }
-      groups[key].push(item);
-      return groups;
-    }, {});
+      const groupedData = mappedData.reduce((groups, item) => {
+        const key = item.date;
+        if (!groups[key]) {
+          groups[key] = [];
+        }
+        groups[key].push(item);
+        return groups;
+      }, {});
 
-    setGroupedData(groupedData);
+      setGroupedData(groupedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   return (
@@ -100,10 +104,14 @@ const Days = () => {
                               </p>
                             </li>
                             <li>
-                              <p className="text-2xl">{group[0].description.charAt(0).toUpperCase() + group[0].description.slice(1)}</p>
+                              <p className="text-2xl">
+                                {group[0].description.charAt(0).toUpperCase() +
+                                  group[0].description.slice(1)}
+                              </p>
                             </li>
                             <li>
-                              <img className="dropShadow"
+                              <img
+                                className="dropShadow"
                                 src={`https://openweathermap.org/img/wn/${group[0].icon}@2x.png`}
                               />
                             </li>
