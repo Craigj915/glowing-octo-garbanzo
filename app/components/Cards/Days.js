@@ -10,6 +10,7 @@ const Days = () => {
   const [groupedData, setGroupedData] = useState({});
   const APIKEY = process.env.REACT_APP_API_KEY;
 
+
   const getData = async () => {
     try {
       const data = await axios.get(
